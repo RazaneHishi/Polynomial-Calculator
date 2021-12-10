@@ -138,6 +138,19 @@ function p_egcd(a, b){
     }
 }
 
+function add_sub(a, b, m){     // addition and subtraction of ploynomials result in the same binary representation, since -1 = 1 mod 2
+    var assert = require('assert');
+    var bit_a = bitCount(a);
+    var bit_b = bitCount(b);
+
+    assert((bit_a-1 == m) && (bit_b-1 == m), "One of your inputs does not belong to the required Galois Field.");
+    var result;
+    console.log("a = " + convertToBinary(a));
+    console.log("b = " + convertToBinary(b));
+    result = a ^ b;
+    return convertToBinary(result);
+}
+
 
 
 
@@ -155,3 +168,5 @@ function p_egcd(a, b){
 
 
     console.log((polyMultiplication(0b11011, 0b1011)))
+    console.log((polyModuloReduction(0b1011, 0b0111)))
+    console.log((add_sub(0b110000100, 0b110001101, 8)))
