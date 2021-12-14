@@ -19,13 +19,13 @@
 
          <select name="degree" id="degree">
             
-            <option value="0b111">2</option>
-            <option value="0b1101">3</option>
-            <option value="0b11001">4</option>
-            <option value="0b100101">5</option>
-            <option value="0b100011">6</option>
-            <option value="0b10000011">7</option>
-            <option value="0b100011011">8</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
           </select>
    
          <br><br>
@@ -57,45 +57,119 @@
              }else{
                document.getElementById("secondPolyInput").removeAttribute('hidden')
              }
-
              })
-
-
           </script>
 
-
-         <form id='firstPolyInput'> 
+         <label for="output">Select input/output type:</label>
+         <select name="base" id="base">
+         <option value="binary">binary</option>
+         <option value="hex">hexadecimal</option>
+         </select>
+         <br/>
+         <br/>
+         <form id='firstPolyInputForm'> 
             <label for="firstPolyInput" >Input your polynomial:
             </label>
-            <input type="polyInputText"> 
+            <input id = 'firstPolyInput' type="polyInputText"> 
          </form>
-
-         <form id='secondPolyInput'> 
+         <br/>
+         <form id='secondPolyInputForm'> 
             <label for="secondPolyInput" >Input your second polynomial:
             </label>
-            <input type="polyInputText"> 
+            <input id='secondPolyInput' type="polyInputText"> 
          </form>
 
          
 
-          <label for="output">Select output type:</label>
-          <select name="base" id="base">
-            <option value="binary">binary</option>
-            <option value="hex">hexadecimal</option>
-          </select>
-
+         <br/>
+          <button type="button" onclick = "compute()">Submit</button> 
          <br><br>
-         <button type="button">Submit</button> 
 
           <br><br>
 
-         <form id='computedOutput'> 
+         <form id='computedOutputForm'> 
             <label for="computedOutput" > Output:
             </label>
-            <label for ="computedOutputText"> 
+            <label id = "computedOutput" for ="computedOutputText"> 
+            </label>
+            <br>
+            <label id = "computedOutput2" for ="computedOutputText">
             </label>
          </form>
    
       </body>
-
+      <script src="PolyCalculator.js">
+            
+      </script>
+      <script>
+               function compute() {
+               polyNomialOne = document.getElementById("firstPolyInput").value;
+               polyNomialTwo = document.getElementById("secondPolyInput").value;
+               m = document.getElementById("degree").value;
+               var operation = document.getElementById("operation").value;
+               var ans = "";
+               var isDiv = false;
+               var base = document.getElementById("base").value;
+               if (base == "hex") {
+                  console.log("polies", polyNomialOne, polyNomialTwo)
+                  polyNomialOne = "0b" + parseInt(polyNomialOne,16).toString(2);
+                  polyNomialTwo = "0b" + parseInt(polyNomialTwo,16).toString(2);
+                  console.log("polies", polyNomialOne, polyNomialTwo)
+               }
+               else {
+                  polyNomialOne = "0b" + polyNomialOne;
+                  polyNomialTwo = "0b" + polyNomialTwo;
+               }
+               console.log("polyNomialOne",polyNomialOne, "polyNomialTwo", polyNomialTwo);
+               if (operation == "addition") {
+                  ans = add_sub(polyNomialOne,polyNomialTwo, m);
+               }
+               else if (operation == "subtraction") {
+                  ans = add_sub(polyNomialOne,polyNomialTwo, m);
+               }
+               else if (operation == "multiplication") {
+                  ans = polyModuloMultiplication(polyNomialOne,polyNomialTwo, m);
+               }
+               else if (operation == "division") {
+                  console.log(polyNomialOne, polyNomialTwo, m);
+                  ansObj = polyModuloDivision(polyNomialOne, polyNomialTwo, m);
+                  console.log("ansObj", ansObj);
+                  ans = "Quotient: " + ansObj["quotient"] + ", Remainder: " + ansObj["remainder"];
+                  console.log("ans: ", ans);
+                  isDiv = true;
+               }
+               else if (operation == "moduloReduction") {
+                  ans = polyModuloReduction(polyNomialOne,m);
+                  
+               }
+               else if (operation == "findingInverse") {
+                  var ans = inverse(polyNomialOne,m) //big then small
+               }
+               ans = ans.toString();
+               if (ans == "-1") {
+                  console.log("Error");
+                  document.getElementById("computedOutput").innerHTML = "Error";
+               }
+               else {
+                  console.log(ans);
+                  if (isDiv == false){
+                     var anw = convertFromBinaryToPoly(ans);
+                     console.log("ans: " + anw);
+                     document.getElementById("computedOutput").innerHTML = anw;
+                     if (base == "hex"){
+                        var binAns = "Hex Result: " + parseInt(ans, 2).toString(16);
+                     }
+                     else {
+                     var binAns = "Binary Result: " + ans;
+                     }
+                     document.getElementById("computedOutput2").innerHTML = binAns;
+                  }
+                  else {
+                     anw = ans;
+                     console.log("ans: " + anw);
+                     document.getElementById("computedOutput").innerHTML = anw;
+                  }
+               }
+            }
+      </script>
    </html>
