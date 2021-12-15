@@ -140,10 +140,11 @@
                }
                else if (operation == "moduloReduction") {
                   ans = polyModuloReduction(polyNomialOne,m);
+                  console.log("answer is : " , ans);
                   
                }
                else if (operation == "findingInverse") {
-                  var ans = inverse(polyNomialOne,m) //big then small
+                  var ans = inverse(m,polyNomialOne) //big then small
                }
                ans = ans.toString();
                if (ans == "-1") {

@@ -86,10 +86,32 @@ function convertToBinary(x) {
     return bin;
 }
 
-function polyModuloReduction(a, b){ //modulo reduction
+function polyModuloReduction(a, m){ //modulo reduction
+    switch(m) {
+        case "2":
+            m = "0b111";
+            break;
+        case "3":
+            m = "0b1101";
+            break;
+        case "4":
+            m = "0b11001";
+            break;
+        case "5":
+            m = "0b100101";
+            break;
+        case "6":
+            m = "0b1000011";
+            break;
+        case "7":
+            m = "0b10000011";
+            break;
+        case "8":
+            m = "0b100011011";
+    }
     var bl;
-    bl = bitCount(b);
-    console.log("checken ", a, b);
+    bl = bitCount(m);
+    console.log("checken ", a, m);
     var shift;
     while (true){
         shift = bitCount(a) - bl;
@@ -99,7 +121,7 @@ function polyModuloReduction(a, b){ //modulo reduction
             console.log(a);
             return a;
         }
-        a ^= b << shift;
+        a ^= m << shift;
     }
     
 }
@@ -246,7 +268,7 @@ function polyDivision(a, b){
         console.log(q, a);
     }
 }
-function inverse(b, m){
+function inverse(m, b){
     switch(m) {
         case "2":
             m = "0b111";
@@ -268,8 +290,9 @@ function inverse(b, m){
             break;
         case "8":
             m = "0b100011011";
+                   
     }
-    inv = p_egcd(b, m);
+    inv = p_egcd(m, b);
     if(inv[3] == 1){
         return inv[2];
     }
@@ -365,5 +388,5 @@ function add_sub(a, b, m){     // addition and subtraction of ploynomials result
     //var ans = polyMultiplication(0b10,0b11101)
     //console.log(ans)
     // console.log((polyMultiplication(0b11011, 0b1011)))
-    // console.log((polyModuloReduction(0b1011, 0b0111)))
+    console.log((polyModuloReduction(0b1011, 0b111)))
     // console.log((add_sub(0b110000100, 0b110001101, 8)))
