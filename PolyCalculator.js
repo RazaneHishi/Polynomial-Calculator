@@ -292,14 +292,14 @@ function inverse(m, b){
             m = "0b100011011";
                    
     }
-    inv = p_egcd(m, b);
+    inv = extendedEuclid(m, b);
     if(inv[3] == 1){
         return inv[2];
     }
     return -1;
 } 
 
-function p_egcd(m, b){
+function extendedEuclid(m, b){
     console.log("Checking types and values of b and m: ")
     console.log(b, m)
     console.log(typeof b, typeof m)
